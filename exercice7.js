@@ -71,7 +71,7 @@ function resumePerCategory(inventory) {
   });
   return availableProductArray;
 }
-resultat = resumePerCategory(inventory);
+const resultat = resumePerCategory(inventory);
 console.log(resultat);
 
 // Exo2 - Enoncé
