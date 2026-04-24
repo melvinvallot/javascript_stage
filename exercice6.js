@@ -29,20 +29,20 @@ const commandeClient = [
   { ref: "PROT1", quantite: 0 },
 ]; // Doit être ignoré (stock 0)
 
-function traiterCommande(inventaire, order) {
+function processCommand(inventaire, order) {
   const inventaryMap = new Map(inventaire.map((item) => [item.ref, item]));
   console.log("invetaryMap", inventaryMap);
   const orderProcessed = order.map((orderProduct) => {
     console.log(orderProduct);
-    const inventaireCategorie = inventaryMap.get(orderProduct.ref);
+    const inventoryCategory = inventaryMap.get(orderProduct.ref);
     // UTILISER UNE MAP POUR OPTIMISER LA RECHERCHE
-    if (!inventaireCategorie) {
+    if (!inventoryCategory) {
       console.log("le produit n'est pas disponible");
-    } else if (inventaireCategorie.stock < orderProduct.quantite) {
+    } else if (inventoryCategory.stock < orderProduct.quantite) {
       console.log("stock insufisant");
     } else {
       return {
-        ...inventaireCategorie,
+        ...inventoryCategory,
         quantite: orderProduct.quantite,
       };
       console.log("commande traitée");
@@ -79,7 +79,7 @@ function traiterCommande(inventaire, order) {
   return { orderProcessed, totalHT, totalReduction, fraisExpedition };
 }
 
-const resultat = traiterCommande(inventaire, commandeClient);
+const resultat = processCommand(inventaire, commandeClient);
 console.log(resultat);
 
 //la reduction de 10 ou 15% s'applique aussi quand il y a moins de 3 produits
