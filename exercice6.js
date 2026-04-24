@@ -55,15 +55,16 @@ function processCommand(inventaire, order) {
   console.log("totalHT:", totalHT);
   //return { articleValide, totalHT };
 
-  // REMPLACER PAR UN REDUCE
+  // REMPLACER FOREACH PAR UN REDUCE
   let reduction = 0;
-  orderProcessed.forEach((article) => {
+  orderProcessed.reduce((accumulateur, article) => {
     if (article.categorie === "Tech") {
       reduction += article.prix * article.quantite * 0.1;
     } else if (article.categorie === "Accessoire") {
       reduction += article.prix * article.quantite * 0.15;
     }
-  });
+    return accumulateur;
+  }, 0);
 
   const totalReduction = totalHT - reduction;
   //return { articleValide, totalHT, totalReduction };
