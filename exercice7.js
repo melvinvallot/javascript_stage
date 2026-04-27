@@ -25,13 +25,13 @@ const inventory = [
 ];
 
 /*function rapportStock(inventory) {
-  return inventory
-    .filter((produit) => produit.stock > 0)
-    .map((produit) => ({
-      label: `[${produit.ref}] ${produit.nom}`,
-      valeurStock: produit.prix * produit.stock,
-      dispo: true,
-    }));
+return inventory
+  .filter((produit) => produit.stock > 0)
+  .map((produit) => ({
+    label: `[${produit.ref}] ${produit.nom}`,
+    valeurStock: produit.prix * produit.stock,
+    dispo: true,
+  }));
 }
 console.log(rapportStock(inventory));*/
 
@@ -51,27 +51,30 @@ console.log(rapportStock(inventory));*/
 // ];
 //
 
-function resumePerCategory(inventory) {
-  const availableProductArray = inventory.reduce((accumulateur, value) => {
-    if (!accumulateur[value.categorie]) {
-      accumulateur[value.categorie] = {
-        nbProduits: 0,
-        stockTotal: 0,
-        prixMoyen: 0,
-      };
-    }
-    accumulateur[value.categorie].nbProduits += value.stock;
-    accumulateur[value.categorie].stockTotal += value.stock;
-    accumulateur[value.categorie].prixMoyen += value.prix;
-    return accumulateur;
-  }, {});
+function summarizeInventoryByCategory(inventory) {
+  return inventory.reduce((accumulateur, { categorie, stock, prix }) => {
+    // DESTRUCTURATION DE L'OBJET POUR RENDRE LE CODE PLUS LISIBLE
+    const currentAccumulatorCategory = accumulateur[categorie] ?? {
+      nbProduits: 0,
+      stockTotal: 0,
+      prixTotal: 0,
+    };
 
-  Object.values(availableProductArray).forEach((categorie) => {
-    categorie.prixMoyen = categorie.prixMoyen / categorie.nbProduits;
-  });
-  return availableProductArray;
+    return {
+      ...accumulateur,
+      [categorie]: {
+        nbProduits: currentAccumulatorCategory.nbProduits + stock,
+        stockTotal: currentAccumulatorCategory.stockTotal + stock,
+        prixTotal: currentAccumulatorCategory.prixTotal + prix,
+        prixMoyen:
+          (currentAccumulatorCategory.prixTotal + prix) /
+          (currentAccumulatorCategory.nbProduits + stock),
+      },
+    };
+  }, {});
 }
-const resultat = resumePerCategory(inventory);
+
+const resultat = summarizeInventoryByCategory(inventory);
 console.log(resultat);
 
 // Exo2 - Enoncé

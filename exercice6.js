@@ -23,8 +23,8 @@ const inventaire = [
   },
 ]; // Hors stock !
 const commandeClient = [
-  { ref: "APP1", quantite: 0 },
-  { ref: "CASE1", quantite: 1 },
+  { ref: "APP1", quantite: 3 },
+  { ref: "CASE1", quantite: 0 },
   { ref: "CABLE1", quantite: 0 },
   { ref: "PROT1", quantite: 0 },
 ]; // Doit être ignoré (stock 0)
@@ -32,22 +32,23 @@ const commandeClient = [
 function processCommand(inventaire, order) {
   const inventaryMap = new Map(inventaire.map((item) => [item.ref, item]));
   console.log("invetaryMap", inventaryMap);
-  const orderProcessed = order.map((orderProduct) => {
-    console.log(orderProduct);
-    const inventoryCategory = inventaryMap.get(orderProduct.ref);
-    // UTILISER UNE MAP POUR OPTIMISER LA RECHERCHE
-    if (!inventoryCategory) {
-      console.log("le produit n'est pas disponible");
-    } else if (inventoryCategory.stock < orderProduct.quantite) {
-      console.log("stock insufisant");
-    } else {
-      return {
-        ...inventoryCategory,
-        quantite: orderProduct.quantite,
-      };
-      console.log("commande traitée");
-    }
-  });
+  const orderProcessed = order
+    .map((orderProduct) => {
+      console.log(orderProduct);
+      const inventoryCategory = inventaryMap.get(orderProduct.ref);
+      if (!inventoryCategory) {
+        console.log("le produit n'est pas disponible");
+      } else if (inventoryCategory.stock < orderProduct.quantite) {
+        console.log("stock insufisant");
+      } else {
+        return {
+          ...inventoryCategory,
+          quantite: orderProduct.quantite,
+        };
+        console.log("commande traitée");
+      }
+    })
+    .filter((article) => article !== undefined);
 
   const totalHT = orderProcessed.reduce((acc, article) => {
     return acc + article.prix * article.quantite;
@@ -56,14 +57,12 @@ function processCommand(inventaire, order) {
   //return { articleValide, totalHT };
 
   // REMPLACER FOREACH PAR UN REDUCE
-  let reduction = 0;
-  orderProcessed.reduce((accumulateur, article) => {
+  const reduction = orderProcessed.reduce((accumulateur, article) => {
     if (article.categorie === "Tech") {
-      reduction += article.prix * article.quantite * 0.1;
+      accumulateur += article.prix * article.quantite * 0.1;
     } else if (article.categorie === "Accessoire") {
-      reduction += article.prix * article.quantite * 0.15;
+      accumulateur += article.prix * article.quantite * 0.15;
     }
-    return accumulateur;
   }, 0);
 
   const totalReduction = totalHT - reduction;

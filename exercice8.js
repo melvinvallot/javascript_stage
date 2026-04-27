@@ -17,3 +17,8 @@ const catalogueB = [
 // Si un produit n'existe que dans A → le garder tel quel
 // Si un produit n'existe que dans B → l'ajouter
 // Retourner un tableau trié par ref alphabétiquement
+
+function fusionnerCatalogues(catalogueA, catalogueB) {
+  return catalogueA.concat(catalogueB);
+}
+console.log(fusionnerCatalogues(catalogueA, catalogueB));
