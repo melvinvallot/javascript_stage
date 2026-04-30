@@ -9,13 +9,12 @@ const kanbanBoard = {
     done: [],
   },
 };
+
 function moveTask(board, taskId, sourceCol, destCol) {
   const taskToMove = board.columns[sourceCol].find(
     (task) => task.id === taskId,
   );
-  if (!taskToMove) {
-    return board;
-  }
+  if (!taskToMove) return board;
 
   const newSourceCol = board.columns[sourceCol].filter(
     (task) => task.id !== taskId,
@@ -32,8 +31,9 @@ function moveTask(board, taskId, sourceCol, destCol) {
   };
 }
 
-const updated = moveTask(kanbanBoard, "t1", "todo", "doing");
+const updated = moveTask(kanbanBoard, "t1", "todo", "done");
 
-console.log(updated.columns.todo.length); // Devrait être égal à 1
-console.log(updated.columns.doing.length); // Devrait être égal à 2
-console.log(kanbanBoard.columns.todo === updated.columns.todo); // Devrait être faux
+console.log(updated.columns.todo.length);
+console.log(updated.columns.doing.length);
+console.log(updated.columns.done.length);
+console.log(kanbanBoard.columns.doing === updated.columns.doing);

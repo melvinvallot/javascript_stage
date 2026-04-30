@@ -202,3 +202,61 @@ arr.fill(0, 1, 3); // [1, 0, 0, 4]
 const arr = [1, 2, 3];
 arr.at(0); // 1
 arr.at(-1); // 3 (dernier element)
+
+//replace()
+strings.replace(recherche, remplacement)
+//remplace la premiere occurence
+const phrase = "bonjour, monde, monde !";
+const resultat = phrase.replace("monde", "javascript");
+console.log(resultat); // bonjour, javascript, monde
+//remplace toutes les occurences pour replaceAll()
+const resultat2 = phrase.replaceAll("monde", "javascript");
+console.log(resultat2)
+
+
+
+
+
+
+
+//Fonctions qui mutent les données (modifie l'original)
+const arr = [1, 2, 3];
+
+// TABLEAUX
+arr.push(4)        // Ajoute à la fin
+arr.pop()          // Supprime le dernier
+arr.shift()        // Supprime le premier
+arr.unshift(0)     // Ajoute au début
+arr.splice(1, 1)   // Supprime/remplace à un index
+arr.sort()         // Trie le tableau
+arr.reverse()      // Inverse le tableau
+arr.fill(0)        // Remplace les valeurs
+const obj = { a: 1 };
+
+// OBJETS
+obj.a = 2                    // Modifie une propriété
+delete obj.a                 // Supprime une propriété
+Object.assign(obj, { b: 2 }) // Fusionne dans l'original
+
+//Fonctions qui ne mutent pas les données (retourne un nouveau tableau ou objet)
+const arr = [1, 2, 3];
+
+// TABLEAUX
+arr.map()        // Transforme chaque élément
+arr.filter()     // Filtre les éléments
+arr.reduce()     // Réduit à une valeur
+arr.slice()      // Copie une partie du tableau
+arr.concat()     // Fusionne des tableaux
+arr.find()       // Trouve un élément
+arr.findIndex()  // Trouve un index
+arr.includes()   // Vérifie si un élément existe
+arr.some()       // Vérifie si un élément correspond
+arr.every()      // Vérifie si tous correspondent
+[...arr]         // Copie le tableau (spread)
+
+
+//STRING  →  replace() replaceAll() split() trim()
+           //toUpperCase() toLowerCase() includes()
+
+//TABLEAU →  map() filter() reduce() find()
+           //push() pop() sort() slice()
