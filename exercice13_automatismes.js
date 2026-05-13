@@ -17,7 +17,13 @@ function enMajuscule() {
   return toUpperCase("bonjour");
 }
 
-function lePlusGrand(a, b, c) {}
+function lePlusGrand(array) {
+  const bigNumbers = Math.max(...array);
+  return bigNumbers;
+}
+const myNumbers = [45, 56, 6, 54, 3];
+const result = lePlusGrand(myNumbers);
+console.log(result);
 
 function compterVoyelles(string) {
   const regex = /[aeiouy]/gi;
@@ -81,4 +87,9 @@ console.log(aDesDoublons(numbers));
 const numbers2 = [10, 25, 3, 3];
 function soustraire(array) {
   return soustraire.reduce((acc, val) => acc - val, 0);
+}
+
+function add(numbersToParse) {
+  const splittedString = numbersToParse.split(",");
+  return splittedString.reduce((acc, val) => acc, val, 0);
 }

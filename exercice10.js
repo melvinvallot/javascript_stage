@@ -31,7 +31,7 @@ const initialState = {
     },
   ],
 };
-function moveStock(data, sourcePath, destPath, sku, amount) {
+/*function moveStock(data, sourcePath, destPath, sku, amount) {
   const newRegions = data.regions.map((region) => {
     if (region.id !== sourcePath.regionId) return region;
     const newCities = region.cities
@@ -54,7 +54,7 @@ function moveStock(data, sourcePath, destPath, sku, amount) {
 // return { ...data, regions: newRegions };
 
 //const newSku = sku.map((code) => code.id);
-//const newAmont = amount.map((count) => count === count.id);
+//const newAmont = amount.map((count) => count === count.id);*/
 
 function moveStock2(data, sourcePath, destPath, sku, amount) {
   // Trouver la région source si non trouvé, on retourne data
@@ -70,6 +70,7 @@ function moveStock2(data, sourcePath, destPath, sku, amount) {
     console.log("Stock insuffisant ou bin source introuvable");
     return data;
   }
+
   const destinationRegion = data.regions.find(
     (region) => region.id === destPath.regionId,
   );
@@ -81,11 +82,10 @@ function moveStock2(data, sourcePath, destPath, sku, amount) {
   const destinationWarehouse = destinationCity?.warehouses.find(
     (warehouse) => warehouse.code === destPath.warehouseCode,
   );
-  console.log("destinationWarehouse", destinationWarehouse);
+
   let destinationBin = destinationWarehouse?.bins.find(
     (bin) => bin.sku === sku,
   );
-  console.log("destinationBin", destinationBin);
 
   const destinationBinCount = destinationBin ? destinationBin.count : 0;
   console.log(destinationBinCount);
@@ -94,8 +94,8 @@ function moveStock2(data, sourcePath, destPath, sku, amount) {
   //     regions: result,
   //   };
 }
-// Trouver la région destination si non trouvé, on la crée
-// Trouver la ville destination, si non trouvé, on le crée
+
+
 // Trouver l'entrepot destination, si non trouvé, on le crée
 // Trouver le bin destination, si non trouvé, on le crée avec une quantité de 0
 // Vérifier que le bin source a suffisamment de stock
