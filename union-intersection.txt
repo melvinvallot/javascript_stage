@@ -1,0 +1,36 @@
+4. Union
+
+Un type OU un autre (A | B)
+
+type ID = string | number
+
+let userId: ID = 123       // ✅
+let userId2: ID = "abc"    // ✅
+let userId3: ID = true     // ❌ Erreur
+
+// Exemple concret
+type Status = "pending" | "success" | "error"
+
+function showStatus(status: Status): void {
+    console.log(status)
+}
+
+
+5. Intersection
+
+Un type ET un autre (A & B) — combine les deux
+
+type Person = {
+    name: string
+}
+
+type Employee = {
+    company: string
+}
+
+type PersonEmployee = Person & Employee
+
+const alice: PersonEmployee = {
+    name: "Alice",      // vient de Person
+    company: "Google"   // vient de Employee
+}

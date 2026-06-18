@@ -35,20 +35,47 @@ const resultsFor2000 = {
     },
   ],
 };
-
-// Remplace l'année dans une date
 function replaceYearInDate(year, date) {
   return `${year}${date.slice(4, date.length)}`;
 }
 
-// Génère les messages d'anniversaire pour une année donnée
-function sendBirthdayMessage(year, birthday) {
-    
+function parseBirthDatesForYear(birthDates, year) {
+  return birthDates.reduce((accumulateur, value) => {
+    const newYearDate = replaceYearInDate(year, value.birthDate);
+    return {
+      ...accumulateur,
+      [newYearDate]: createBirthdayMessage(value),
+      ...birthDates
+        .filter((firstName, lastName) => {
+          firstName !== value.firstName && lastName !== value.lastName;
+        })
+        .map((email) => {
+          createBirthdayReminder(email, {
+            firstName: value.firstName,
+            lastName: value.lastName,
+          });
+        }),
+    };
+  }, {});
 }
-// Crée la nouvelle date avec l'année fournie
+function createBirthdayMessage(person) {
+  return {
+    to: person.email,
+    message: `"Happy birthday, dear ${person.firstName}!"`,
+  };
+}
 
-// Message pour la personne qui fête son anniversaire
+function createBirthdayReminder(recipient, firstName, lastName) {}
+console.log(replaceYearInDate("2000", "1990-01-15"));
+console.log(replaceYearInDate("2000", "1995-02-15"));
+console.log(parseBirthDatesForYear(birthDates, "2000"));
 
-// Messages pour tous les autres
 
-// Combine le message d'anniversaire avec les autres messages
+
+
+
+
+function replaceYearInDate(year ,date) {
+  return `${year}${date.slice(4, date.length)}`
+}
+

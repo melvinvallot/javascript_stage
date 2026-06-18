@@ -1,0 +1,203 @@
+SOLID est un acronyme représentant 5 principes de conception en programmation orientée objet, introduits par Robert C. Martin (Uncle Bob).
+
+S — Single Responsibility Principle (SRP)
+
+"Une classe = une seule responsabilité"
+
+Une classe ne doit avoir qu'une seule raison de changer.
+// ❌ Mauvais
+class User {
+    saveToDb(): void { ... }
+    sendEmail(): void { ... }
+    generateReport(): void { ... }
+}
+
+// ✅ Bon
+class User {
+    constructor(public name: string, public email: string) {}
+}
+
+class UserRepository {
+    save(user: User): void { ... }
+}
+
+class EmailService {
+    sendEmail(user: User): void { ... }
+}
+
+class ReportGenerator {
+    generate(user: User): void { ... }
+}
+
+
+
+
+
+O — Open/Closed Principle (OCP)
+
+"Ouvert à l'extension, fermé à la modification"
+
+On doit pouvoir ajouter des fonctionnalités sans modifier le code existant.
+// ❌ Mauvais
+class Shape {
+    calculateArea(type: string): number {
+        if (type === "circle") { ... }
+        if (type === "square") { ... }
+        // modifier à chaque nouveau type ❌
+    }
+}
+
+// ✅ Bon
+interface Shape {
+    area(): number
+}
+
+class Circle implements Shape {
+    constructor(private radius: number) {}
+    area(): number { return Math.PI * this.radius ** 2 }
+}
+
+class Square implements Shape {
+    constructor(private side: number) {}
+    area(): number { return this.side ** 2 }
+}
+
+// Ajouter Triangle ne modifie rien ✅
+class Triangle implements Shape {
+    constructor(private base: number, private height: number) {}
+    area(): number { return (this.base * this.height) / 2 }
+}
+
+# Ajouter un Triangle ne modifie pas le code existant
+
+
+
+
+
+L — Liskov Substitution Principle (LSP)
+
+"Un enfant doit pouvoir remplacer son parent"
+
+Une classe fille doit pouvoir substituer sa classe parent sans casser le comportement.
+// ❌ Mauvais
+class Bird {
+    fly(): void { console.log("Je vole !") }
+}
+
+class Penguin extends Bird {
+    fly(): void {
+        throw new Error("Je ne vole pas !") // Viole LSP ❌
+    }
+}
+
+// ✅ Bon
+class Bird {
+    eat(): void { console.log("Je mange !") }
+}
+
+class FlyingBird extends Bird {
+    fly(): void { console.log("Je vole !") }
+}
+
+class Penguin extends Bird {
+    swim(): void { console.log("Je nage !") }
+}
+
+class Eagle extends FlyingBird {} // ✅ peut remplacer FlyingBird
+
+
+
+
+
+I — Interface Segregation Principle (ISP)
+
+"Plusieurs interfaces spécifiques valent mieux qu'une seule générale"
+
+Ne pas forcer une classe à implémenter des méthodes dont elle n'a pas besoin.
+// ❌ Mauvais
+interface Animal {
+    eat(): void
+    fly(): void
+    swim(): void
+}
+
+class Dog implements Animal {
+    eat(): void { ... }
+    fly(): void { throw new Error("Je ne vole pas !") } // forcé ❌
+    swim(): void { ... }
+}
+
+// ✅ Bon
+interface Eater {
+    eat(): void
+}
+
+interface Swimmer {
+    swim(): void
+}
+
+interface Flyer {
+    fly(): void
+}
+
+class Dog implements Eater, Swimmer {
+    eat(): void { console.log("Je mange !") }
+    swim(): void { console.log("Je nage !") }
+}
+
+class Duck implements Eater, Swimmer, Flyer {
+    eat(): void { console.log("Je mange !") }
+    swim(): void { console.log("Je nage !") }
+    fly(): void { console.log("Je vole !") }
+}
+
+class Duck(Eater, Swimmer): ...  # prend ce dont il a besoin
+
+
+
+
+
+D — Dependency Inversion Principle (DIP)
+
+"Dépendre des abstractions, pas des implémentations"
+
+Les modules de haut niveau ne doivent pas dépendre des modules de bas niveau, mais des abstractions.
+// ❌ Mauvais
+class MySQLDatabase {
+    save(data: string): void { ... }
+}
+
+class OrderService {
+    private db = new MySQLDatabase() // couplage fort ❌
+
+    saveOrder(order: string): void {
+        this.db.save(order)
+    }
+}
+
+// ✅ Bon
+interface Database {
+    save(data: string): void
+}
+
+class MySQLDatabase implements Database {
+    save(data: string): void { console.log("Sauvegarde MySQL") }
+}
+
+class PostgreSQLDatabase implements Database {
+    save(data: string): void { console.log("Sauvegarde PostgreSQL") }
+}
+
+class OrderService {
+    constructor(private db: Database) {} // abstraction ✅
+
+    saveOrder(order: string): void {
+        this.db.save(order)
+    }
+}
+
+// Utilisation
+const service = new OrderService(new MySQLDatabase())
+const service2 = new OrderService(new PostgreSQLDatabase())
+
+# On peut injecter MySQL, PostgreSQL, MongoDB...
